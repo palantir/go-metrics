@@ -206,12 +206,16 @@ func (r *StandardRegistry) GetAll() map[string]map[string]interface{} {
 
 // Unregister the metric with the given name.
 func (r *StandardRegistry) Unregister(name string) {
-	fmt.Println("Unregistering metric in StandardRegistry", name)
+	if strings.Contains(name, "signals.expected-state.beta.healthstatus.node.value.status") && strings.Contains(name, "rubix-node-agent") {
+		fmt.Println("Unregistering metric in StandardRegistry", name)
+	}
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 	r.stop(name)
 	delete(r.metrics, name)
-	fmt.Println("Finished unregistering metric", name)
+	if strings.Contains(name, "signals.expected-state.beta.healthstatus.node.value.status") && strings.Contains(name, "rubix-node-agent") {
+		fmt.Println("Finished unregistering metric", name)
+	}
 }
 
 // Unregister all metrics.  (Mostly for testing.)
